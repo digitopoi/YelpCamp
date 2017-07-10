@@ -1,0 +1,23 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "description": "YelpCamp v1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digitopoi/YelpCamp.git"
+  },
+  "author": "Hugh Bowman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/digitopoi/YelpCamp/issues"
+  },
+  "homepage": "https://github.com/digitopoi/YelpCamp#readme",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.3"
+  }
+}
