@@ -40,7 +40,7 @@ app.get("/campgrounds/new",
     });
 
 //  SERVER
-app.listen(3000,
+app.listen(process.env.PORT, process.env.IP, //  for Cloud9 - otherwise (3000)
     function () {
         console.log("The YelpCamp server has started!");
     });
