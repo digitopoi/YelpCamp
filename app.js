@@ -16,25 +16,18 @@ var campgroundSchema = new mongoose.Schema({
 //  model
 var Campground = mongoose.model("Campground", campgroundSchema);
 
-Campground.create(
-    { 
-        name: "Salmon Creek", 
-        image: "https://farm3.staticflickr.com/2259/2182093741_164dc44a24.jpg" 
-    }, function(err, campground) {
-        if(err){
-            console.log(err);
-        } else {
-            console.log("CREATED CAMPGROUND: ");
-            console.log(campground);
-        }
-    });
-//  TEMP CAMPGROUND ARRAY - [{name: <name>, image: <url>}]
-var campgrounds = [
-    { name: "Salmon Creek", image: "https://farm3.staticflickr.com/2259/2182093741_164dc44a24.jpg" },
-    { name: "Granite Hill", image: "https://farm4.staticflickr.com/3872/14435096036_39db8f04bc.jpg" },
-    { name: "Mountain Goat's Rest", image: "https://farm2.staticflickr.com/1281/4684194306_18ebcdb01c.jpg" }
-
-];
+// Campground.create(
+//     { 
+//         name: "Granite Hill", 
+//         image: "https://farm4.staticflickr.com/3872/14435096036_39db8f04bc.jpg" 
+//     }, function(err, campground) {
+//         if(err){
+//             console.log(err);
+//         } else {
+//             console.log("CREATED CAMPGROUND: ");
+//             console.log(campground);
+//         }
+//     });
 
 
 app.get("/",
@@ -44,7 +37,14 @@ app.get("/",
 
 app.get("/campgrounds",
     function(req, res) {
-        res.render("campgrounds", {campgrounds: campgrounds});
+        //  Get all campgrounds from db
+        Campground.find({}, function(err, campgrounds) {
+            if(err) {
+                console.log(err);
+            } else {
+                res.render("campgrounds", {campgrounds: campgrounds});
+            }
+        });
     });
 
 app.post("/campgrounds",
@@ -53,9 +53,15 @@ app.post("/campgrounds",
         var name = req.body.name;
         var image = req.body.image;
         var newCampground = { name: name, image: image };
-        campgrounds.push(newCampground);
-        //  redirect to campgrounds page
-        res.redirect("/campgrounds");
+        //  Create new campground and save to database
+        Campground.create(newCampground, function(err, newlyCreated) {
+            if(err){
+                console.log(err);
+            } else {
+                //  redirect to campgrounds page
+                res.redirect("/campgrounds");
+            }
+        });
     });
 
 app.get("/campgrounds/new",
