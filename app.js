@@ -6,10 +6,10 @@ var express     = require("express"),
     Campground  = require("./models/campground"),
     seedDB      = require("./seeds");
     
-seedDB();
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+seedDB();
 
 //  ROOT ROUTE
 app.get("/",
@@ -56,13 +56,14 @@ app.get("/campgrounds/new",
     });
     
 //  SHOW ROUTE - Displays info about one campground
-app.get("/campgrounds/:id", function(req, res) {
-    //  find the campground with provided ID
-    Campground.findById(req.params.id, function(err, foundCampground) {
-        if(err) {
+app.get("/campgrounds/:id", function(req, res){
+    //find the campground with provided ID
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
+        if(err){
             console.log(err);
         } else {
-            //  render show template with that campground
+            console.log(foundCampground);
+            //render show template with that campground
             res.render("show", {campground: foundCampground});
         }
     });
