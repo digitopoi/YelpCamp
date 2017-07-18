@@ -114,7 +114,13 @@ app.post("/campgrounds/:id/comments", function(req, res) {
 });
 
 //  SERVER
-app.listen(process.env.PORT, process.env.IP, //  for Cloud9 - otherwise (3000)
-    function () {
-        console.log("The YelpCamp server has started!");
-    });
+//  c9
+// app.listen(process.env.PORT, process.env.IP, //  for Cloud9 - otherwise (3000)
+//     function () {
+//         console.log("The YelpCamp server has started!");
+//     });
+
+//  localhost
+app.listen(3000, function() {
+    console.log("The YelpCamp server has started!");
+});
