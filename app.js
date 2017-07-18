@@ -1,11 +1,14 @@
 //  Express / EJS 
-var express     = require("express"),
-    app         = express(),
-    mongoose    = require("mongoose"),
-    bodyParser  = require("body-parser"),
-    Campground  = require("./models/campground"),
-    Comment     = require("./models/comment"),
-    seedDB      = require("./seeds");
+var express         = require("express"),
+    app             = express(),
+    mongoose        = require("mongoose"),
+    bodyParser      = require("body-parser"),
+    passport        = require("passport"),
+    LocalStrategy   = require("passport-local"),
+    Campground      = require("./models/campground"),
+    Comment         = require("./models/comment"),
+    User            = require("./models/user"),
+    seedDB          = require("./seeds");
     
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.set("view engine", "ejs");
