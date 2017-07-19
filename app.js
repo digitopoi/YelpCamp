@@ -28,6 +28,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//  MIDDLEWARE - Provide user data to every page
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 //  ROOT ROUTE
 app.get("/",
     function(req, res) {
@@ -39,17 +45,16 @@ app.get("/",
 //  ===================================
 
 //  INDEX ROUTE - show all campgrounds
-app.get("/campgrounds",
-    function(req, res) {
-        //  Get all campgrounds from db
-        Campground.find({}, function(err, campgrounds) {
-            if(err) {
+app.get("/campgrounds", function(req, res) {
+    //  Get all campgrounds from db
+    Campground.find({}, function(err, campgrounds) {
+        if(err) {
                 console.log(err);
-            } else {
-                res.render("campgrounds/index", {campgrounds: campgrounds});
-            }
-        });
+        } else {
+            res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user});
+        }
     });
+});
 
 //  CREATE ROUTE - Add new campground to the database
 app.post("/campgrounds",
