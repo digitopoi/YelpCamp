@@ -15,29 +15,27 @@ router.get("/", function(req, res) {
 });
 
 //  CREATE ROUTE - Add new campground to the database
-router.post("/",
-    function (req, res) {
-        //  get data from form and add to campgrounds array
-        var name = req.body.name;
-        var image = req.body.image;
-        var desc = req.body.description;
-        var newCampground = { name: name, image: image, description: desc };
-        //  Create new campground and save to database
-        Campground.create(newCampground, function(err, newlyCreated) {
-            if(err){
-                console.log(err);
-            } else {
-                //  redirect to campgrounds page
-                res.redirect("/campgrounds");
-            }
-        });
+router.post("/", isLoggedIn, function (req, res) {
+    //  get data from form and add to campgrounds array
+    var name = req.body.name;
+    var image = req.body.image;
+    var desc = req.body.description;     
+    var newCampground = { name: name, image: image, description: desc };
+    //  Create new campground and save to database
+    Campground.create(newCampground, function(err, newlyCreated) {
+        if(err){
+            console.log(err);
+        } else {
+            //  redirect to campgrounds page
+            res.redirect("/campgrounds");
+        }
     });
+});
 
 //  NEW ROUTE - Display a form to make a campground
-router.get("/new",
-    function(req, res) {
-        res.render("campgrounds/new");
-    });
+router.get("/new", isLoggedIn,function(req, res) {
+    res.render("campgrounds/new");
+});
     
 //  SHOW ROUTE - Displays info about one campground
 router.get("/:id", function(req, res){
@@ -52,5 +50,13 @@ router.get("/:id", function(req, res){
         }
     });
 });
+
+//  MIDDLEWARE - check if logged in
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/login");
+}
 
 module.exports = router;
