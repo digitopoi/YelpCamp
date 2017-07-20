@@ -55,6 +55,10 @@ router.get("/:id", function(req, res){
     });
 });
 
+//  Edit campground route
+
+//  Update campground route
+
 //  MIDDLEWARE - check if logged in
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()) {
