@@ -55,6 +55,18 @@ router.get("/:comment_id/edit", function(req, res) {
     });
 });
 
+//  Update comments route
+router.put("/:comment_id", function(req, res) {
+    Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
+        if(err) {
+            console.log(err);
+            res.send("ERROR!!: \n\n\n" + err);
+        } else {
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
 
 //  ============================================
 //      MIDDLEWARE - check if logged in
