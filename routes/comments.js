@@ -45,7 +45,7 @@ router.post("/", isLoggedIn, function(req, res) {
 });
 
 //  Edit comments route
-router.get("/:comment_id/edit", function(req, res) {
+router.get("/:comment_id/edit", checkCommentOwnership, function(req, res) {
     Comment.findById(req.params.comment_id, function(err, foundComment) {
         if(err) {
             res.redirect("back");
@@ -82,11 +82,32 @@ router.delete("/:comment_id", function(req, res) {
 //  ============================================
 //      MIDDLEWARE - check if logged in
 //  ============================================
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()) {
         return next();
     }
     res.redirect("/login");
 }
+
+function checkCommentOwnership(req, res, next) {
+    //  Is user logged in?
+    if(req.isAuthenticated()) {
+        Comment.findById(req.params.comment_id, function(err, foundComment) {
+            if(err) {
+                res.redirect("back");
+            } else {
+                //  Does user own comment?
+                if(foundComment.author.id.equals(req.user._id)) {      // foundComment.author.id is an object 
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        });
+    } else {
+        res.redirect("back");
+    }
+} 
 
 module.exports = router;
