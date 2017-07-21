@@ -56,7 +56,7 @@ router.get("/:comment_id/edit", checkCommentOwnership, function(req, res) {
 });
 
 //  Update comments route
-router.put("/:comment_id", function(req, res) {
+router.put("/:comment_id", checkCommentOwnership, function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
         if(err) {
             console.log(err);
