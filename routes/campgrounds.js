@@ -8,7 +8,8 @@ router.get("/", function(req, res) {
     //  Get all campgrounds from db
     Campground.find({}, function(err, campgrounds) {
         if(err) {
-                console.log(err);
+            req.flash("error", "Something went wrong.");
+            res.redirect("back");
         } else {
             res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user});
         }
@@ -29,9 +30,11 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
     //  Create new campground and save to database
     Campground.create(newCampground, function(err, newlyCreated) {
         if(err){
-            console.log(err);
+            req.flash("error", "Something went wrong.");
+            res.redirect("back");
         } else {
             //  redirect to campgrounds page
+            req.flash("success", "Thank you!\nCampground successfully added to the database.");
             res.redirect("/campgrounds");
         }
     });
@@ -59,6 +62,10 @@ router.get("/:id", function(req, res){
 //  EDIT CAMPGROUND ROUTE
 router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res) {
     Campground.findById(req.params.id, function(err, foundCampground) {
+        if (err) {
+            req.flash("error", "Campground not found.");
+            res.redirect("back");
+        }
         res.render("campgrounds/edit", {campground: foundCampground});
     });
 });
@@ -70,6 +77,7 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res) {
         if(err) {
             res.redirect("/campgrounds");
         } else {
+            req.flash("error", "Campground not found.");
             //  redirect to show page
             res.redirect("/campgrounds/" + req.params.id);
         }
