@@ -41,7 +41,8 @@ passport.deserializeUser(User.deserializeUser());
 //  MIDDLEWARE - Provide user data to every page
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
-    res.locals.message = req.flash("error");            //  Provide flash to every page
+    res.locals.error = req.flash("error");              //  Provide error flash to every page
+    res.locals.success = req.flash("success");            //  Provide success flash to every page
     next();
 });
 
