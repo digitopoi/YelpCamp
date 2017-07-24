@@ -11,7 +11,7 @@ router.get("/", function(req, res) {
             req.flash("error", "Something went wrong.");
             res.redirect("back");
         } else {
-            res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user});
+            res.render("campgrounds/index", {campgrounds: campgrounds, currentUser: req.user, page: "campgrounds"});
         }
     });
 });
