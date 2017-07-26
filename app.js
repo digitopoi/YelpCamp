@@ -16,11 +16,12 @@ var express         = require("express"),
 var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
     indexRoutes      = require("./routes/index");
+
+//  avoid promise error
 mongoose.Promise = global.Promise;
-//  local db
-// mongoose.connect("mongodb://localhost/yelp_camp2");
-//  mongo lab db
-mongoose.connect("mongodb://digitopoi:tsunami1985@ds125623.mlab.com:25623/yelpcamp-digitopoi", {useMongoClient: true});
+
+//  db connection
+mongoose.connect(process.env.DATABASEURL);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,8 +60,8 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 //  ===================================
 //              SERVER CONFIG
 //  ===================================
-//  c9
-app.listen(process.env.PORT, process.env.IP, //  for Cloud9 - otherwise (3000)
+//  c9 / heroku
+app.listen(process.env.PORT, process.env.IP,
     function () {
         console.log("The YelpCamp server has started!");
     });
