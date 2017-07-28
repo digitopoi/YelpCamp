@@ -21,7 +21,8 @@ var commentRoutes    = require("./routes/comments"),
 mongoose.Promise = global.Promise;
 
 //  db connection
-mongoose.connect(process.env.DATABASEURL);
+//   mongoose.connect(process.env.DATABASEURL);
+mongoose.connect("mongodb://localhost/yelp_camp2");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -61,13 +62,13 @@ app.use("/campgrounds/:id/comments", commentRoutes);
 //              SERVER CONFIG
 //  ===================================
 //  c9 / heroku
-app.listen(process.env.PORT, process.env.IP,
-    function () {
-        console.log("The YelpCamp server has started!");
-    });
+// app.listen(process.env.PORT, process.env.IP,
+//     function () {
+//         console.log("The YelpCamp server has started!");
+//     });
 
 // //  localhost
-// app.listen(3000, function() {
-//     console.log("The YelpCamp server has started!");
-// });
+app.listen(3000, function() {
+    console.log("The YelpCamp server has started!");
+});
 
